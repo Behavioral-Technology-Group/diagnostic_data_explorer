@@ -1,0 +1,19 @@
+.data__list {
+  flex-grow: 5;
+  overflow: auto;
+}
+.data__list table {
+  width: 100%;
+}
+
+.datalist__item td {
+  border-collapse: collapse;
+  border: 0;
+}
+
+.datalist__item:nth-child(even) {
+  background: #ccc;
+}
+.datalist__item:nth-child(odd) {
+  background: #fff;
+}
