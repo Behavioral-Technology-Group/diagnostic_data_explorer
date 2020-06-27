@@ -17,7 +17,6 @@ const dataItem = (dataset) => {
   );
 };
 const DataList = ({ data }) => {
-  console.log(data);
   return (
     <div className="data__list">
       <table>

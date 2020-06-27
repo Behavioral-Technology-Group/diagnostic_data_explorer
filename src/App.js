@@ -1,34 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import baseData from "./baseData";
 import DataList from "./components/DataList";
 import Filter from "./components/Filter";
 
-const buildBaseFilters = () => {
-  return baseData.log.reduce((base, d) => {
-    return { ...base, [d.name]: true };
-  }, {});
+const fetchData = async () => {
+  const id = window.location.search.split("=")[1];
+  const apiUrl = `https://pavlok-parser.herokuapp.com?id=${id}`;
+  const request = await fetch(apiUrl, { method: "POST" });
+  const json = await request.json();
+  return json.log;
 };
 
-const filterData = () => {
-  const data = baseData.log;
-  const cache = {};
-
-  return (filters) => {
-    const key = JSON.stringify(filters);
-    if (!cache[key]) {
-      console.log("calculating cache");
-      cache[key] = data.filter((d) => filters[d.name]);
-    }
-
-    return cache[key];
-  };
-};
-
-const filteredData = filterData();
+const filteredData = (data, filters) => data.filter((d) => filters[d.name]);
 
 function App() {
-  const [filters, setFilters] = useState(buildBaseFilters());
+  const [filters, setFilters] = useState({});
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchInitialData() {
+      const freshData = await fetchData();
+      setData(freshData);
+      setFilters(
+        freshData.reduce((base, d) => {
+          return { ...base, [d.name]: true };
+        }, {})
+      );
+    }
+    fetchInitialData();
+  }, []);
 
   return (
     <div className="App">
@@ -36,7 +36,7 @@ function App() {
         <Filter options={filters} onChange={setFilters} />
       </div>
       <div className="Main">
-        <DataList data={filteredData(filters)} />
+        <DataList data={filteredData(data, filters)} />
       </div>
     </div>
   );
