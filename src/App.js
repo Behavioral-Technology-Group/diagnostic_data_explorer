@@ -4,7 +4,9 @@ import DataList from "./components/DataList";
 import Filter from "./components/Filter";
 
 const fetchData = async () => {
-  const id = window.location.search.split("=")[1];
+  const id = new URLSearchParams(document.location.search.substring(1)).get(
+    "id"
+  );
   const apiUrl = `https://pavlok-parser.herokuapp.com?id=${id}`;
   const request = await fetch(apiUrl, { method: "POST" });
   const json = await request.json();
@@ -12,6 +14,10 @@ const fetchData = async () => {
 };
 
 const filteredData = (data, filters) => data.filter((d) => filters[d.name]);
+const getDataTypes = (data) =>
+  data.reduce((base, d) => {
+    return { ...base, [d.name]: true };
+  }, {});
 
 function App() {
   const [filters, setFilters] = useState({});
@@ -21,11 +27,7 @@ function App() {
     async function fetchInitialData() {
       const freshData = await fetchData();
       setData(freshData);
-      setFilters(
-        freshData.reduce((base, d) => {
-          return { ...base, [d.name]: true };
-        }, {})
-      );
+      setFilters(getDataTypes(freshData));
     }
     fetchInitialData();
   }, []);
