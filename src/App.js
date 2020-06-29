@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import DataList from "./components/DataList";
-import Filter from "./components/Filter";
+import Dump from "./components/Dump";
+import Explorer from "./components/Explorer";
+import Loading from "./components/Loading";
 
 const fetchData = async () => {
   const id = new URLSearchParams(document.location.search.substring(1)).get(
@@ -10,10 +11,9 @@ const fetchData = async () => {
   const apiUrl = `https://pavlok-parser.herokuapp.com?id=${id}`;
   const request = await fetch(apiUrl, { method: "POST" });
   const json = await request.json();
-  return json.log;
+  return json;
 };
 
-const filteredData = (data, filters) => data.filter((d) => filters[d.name]);
 const getDataTypes = (data) =>
   data.reduce((base, d) => {
     return { ...base, [d.name]: true };
@@ -22,26 +22,41 @@ const getDataTypes = (data) =>
 function App() {
   const [filters, setFilters] = useState({});
   const [data, setData] = useState([]);
+  const [version, setVersion] = useState("unknown");
+  const [raw, setRaw] = useState({});
+  const [curState, setCurState] = useState("default");
+
+  const useRaw = new URLSearchParams(document.location.search.substring(1)).get(
+    "debug"
+  );
 
   useEffect(() => {
     async function fetchInitialData() {
-      const freshData = await fetchData();
-      setData(freshData);
-      setFilters(getDataTypes(freshData));
+      setCurState("loading");
+      const response = await fetchData();
+      const { log, version } = response;
+      setCurState(useRaw === "true" ? "dump" : "explore");
+      setData(log);
+      setVersion(version);
+      setFilters(getDataTypes(log));
+      setRaw(response);
     }
     fetchInitialData();
   }, []);
 
-  return (
-    <div className="App">
-      <div className="Sidebar">
-        <Filter options={filters} onChange={setFilters} />
-      </div>
-      <div className="Main">
-        <DataList data={filteredData(data, filters)} />
-      </div>
-    </div>
-  );
+  const states = {
+    loading: <Loading />,
+    dump: <Dump raw={raw} version={version} />,
+    explore: (
+      <Explorer
+        filters={filters}
+        setFilters={setFilters}
+        data={data}
+        version={version}
+      />
+    ),
+  };
+  return <div className="App">{states[curState]}</div>;
 }
 
 export default App;

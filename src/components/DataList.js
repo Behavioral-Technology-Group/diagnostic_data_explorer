@@ -16,25 +16,31 @@ const dataItem = (dataset) => {
     </tr>
   );
 };
-const DataList = ({ data }) => {
-  return (
-    <div className="data__list">
-      {data.length === 0 ? (
-        <h3>No data for this feedback</h3>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Timestamp</th>
-              <th>Info</th>
-            </tr>
-          </thead>
-          <tbody>{data.map((d) => dataItem(d))}</tbody>
-        </table>
-      )}
+const DataList = ({ data, version }) => {
+  const noDataComp = <h3>No data for this feedback</h3>;
+  const dataComp = (
+    <div>
+      <h2>Parser version: {version}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Timestamp</th>
+            <th>Info</th>
+          </tr>
+        </thead>
+        <tbody>{data.map((d) => dataItem(d))}</tbody>
+      </table>
     </div>
   );
+
+  const state = data.length === 0 ? "noData" : "data";
+  const content = {
+    noData: noDataComp,
+    data: dataComp,
+  };
+
+  return <div className="data__list">{content[state]}</div>;
 };
 
 export default DataList;
