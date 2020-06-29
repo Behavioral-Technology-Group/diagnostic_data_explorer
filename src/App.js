@@ -19,19 +19,19 @@ const getDataTypes = (data) =>
     return { ...base, [d.name]: true };
   }, {});
 
+const calculateUseRaw = () =>
+  new URLSearchParams(document.location.search.substring(1)).get("debug");
+
 function App() {
   const [filters, setFilters] = useState({});
   const [data, setData] = useState([]);
   const [version, setVersion] = useState("unknown");
   const [raw, setRaw] = useState({});
   const [curState, setCurState] = useState("default");
+  // const [useRaw, setUseRaw] = useState("false");
 
-  const useRaw = new URLSearchParams(document.location.search.substring(1)).get(
-    "debug"
-  );
-
-  useEffect(() => {
-    async function fetchInitialData() {
+  useEffect((useRaw) => {
+    async function fetchInitialData(useRaw) {
       setCurState("loading");
       const response = await fetchData();
       const { log, version } = response;
@@ -41,7 +41,7 @@ function App() {
       setFilters(getDataTypes(log));
       setRaw(response);
     }
-    fetchInitialData();
+    fetchInitialData(calculateUseRaw());
   }, []);
 
   const states = {
