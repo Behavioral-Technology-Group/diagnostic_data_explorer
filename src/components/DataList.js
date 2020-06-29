@@ -16,7 +16,7 @@ const dataItem = (dataset) => {
     </tr>
   );
 };
-const DataList = ({ data, version }) => {
+const DataList = ({ data, version, hasData }) => {
   const noDataComp = <h3>No data for this feedback</h3>;
   const dataComp = (
     <div>
@@ -34,7 +34,7 @@ const DataList = ({ data, version }) => {
     </div>
   );
 
-  const state = data.length === 0 ? "noData" : "data";
+  const state = hasData ? "data" : "noData";
   const content = {
     noData: noDataComp,
     data: dataComp,
