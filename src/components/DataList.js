@@ -38,9 +38,17 @@ const dataItem = (dataset, prettyPrint) => {
     </tr>
   );
 };
+
+const prepData = (data, prettyPrint) => {
+  const reversedData = [...data].reverse();
+  return reversedData.map((d) => {
+    console.log(d);
+    return dataItem(d, prettyPrint);
+  });
+};
+
 const DataList = ({ data, version, hasData }) => {
   const [prettyPrint, setPrettyPrint] = useState(true);
-
   const noDataComp = <h3>No data for this feedback</h3>;
   const dataComp = (
     <div>
@@ -61,7 +69,7 @@ const DataList = ({ data, version, hasData }) => {
             <th>Info</th>
           </tr>
         </thead>
-        <tbody>{data.map((d) => dataItem(d, prettyPrint))}</tbody>
+        <tbody>{prepData(data, prettyPrint)}</tbody>
       </table>
     </div>
   );
