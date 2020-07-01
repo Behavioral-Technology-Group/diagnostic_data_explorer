@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./DataList.css";
 
 import Zap from "./events/zap";
+import Vibe from "./events/vibration";
+import Beep from "./events/beep";
 import Config from "./events/config";
 import Battery from "./events/battery";
 
 const defaultInfo = (info) => {
   return stringifyInfo(info);
 };
-const jsonizedInfo = (info) => {
-  return JSON.stringify(info);
-};
+
 const infoDictionary = {
   Zap,
   Config,
   Battery,
+  Vibe,
+  Beep,
 };
 
 const stringifyInfo = (info) => {
@@ -23,20 +25,34 @@ const stringifyInfo = (info) => {
     .join(" || ");
 };
 
-const dataItem = (dataset) => {
+const dataItem = (dataset, prettyPrint) => {
+  const infoComp = prettyPrint
+    ? infoDictionary[dataset.name] || defaultInfo
+    : defaultInfo;
+
   return (
     <tr className="datalist__item">
       <td>{dataset.name}</td>
       <td>{dataset.ts}</td>
-      <td>{(infoDictionary[dataset.name] || defaultInfo)(dataset.v)}</td>
+      <td>{infoComp(dataset.v)}</td>
     </tr>
   );
 };
 const DataList = ({ data, version, hasData }) => {
+  const [prettyPrint, setPrettyPrint] = useState(true);
+
   const noDataComp = <h3>No data for this feedback</h3>;
   const dataComp = (
     <div>
       <h2>Parser version: {version}</h2>
+      <p>
+        <input
+          type="checkbox"
+          checked={prettyPrint}
+          onChange={(e) => setPrettyPrint(e.target.checked)}
+        />{" "}
+        Pretty Print
+      </p>
       <table>
         <thead>
           <tr>
@@ -45,7 +61,7 @@ const DataList = ({ data, version, hasData }) => {
             <th>Info</th>
           </tr>
         </thead>
-        <tbody>{data.map((d) => dataItem(d))}</tbody>
+        <tbody>{data.map((d) => dataItem(d, prettyPrint))}</tbody>
       </table>
     </div>
   );
