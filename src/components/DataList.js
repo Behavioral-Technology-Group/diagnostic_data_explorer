@@ -1,6 +1,16 @@
 import React from "react";
 import "./DataList.css";
 
+import Zap from "./events/zap";
+
+const defaultInfo = (info) => {
+  return stringifyInfo(info);
+};
+
+const infoDictionary = {
+  Zap,
+};
+
 const stringifyInfo = (info) => {
   return Object.keys(info)
     .map((k) => `${k}: ${info[k]}`)
@@ -12,7 +22,7 @@ const dataItem = (dataset) => {
     <tr className="datalist__item">
       <td>{dataset.name}</td>
       <td>{dataset.ts}</td>
-      <td>{stringifyInfo(dataset.v)}</td>
+      <td>{(infoDictionary[dataset.name] || defaultInfo)(dataset.v)}</td>
     </tr>
   );
 };
