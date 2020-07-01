@@ -2,13 +2,17 @@ import React from "react";
 import "./DataList.css";
 
 import Zap from "./events/zap";
+import Config from "./events/config";
 
 const defaultInfo = (info) => {
   return stringifyInfo(info);
 };
-
+const jsonizedInfo = (info) => {
+  return JSON.stringify(info);
+};
 const infoDictionary = {
   Zap,
+  Config,
 };
 
 const stringifyInfo = (info) => {
