@@ -3,6 +3,7 @@ import "./DataList.css";
 
 import Zap from "./events/zap";
 import Config from "./events/config";
+import Battery from "./events/battery";
 
 const defaultInfo = (info) => {
   return stringifyInfo(info);
@@ -13,6 +14,7 @@ const jsonizedInfo = (info) => {
 const infoDictionary = {
   Zap,
   Config,
+  Battery,
 };
 
 const stringifyInfo = (info) => {
