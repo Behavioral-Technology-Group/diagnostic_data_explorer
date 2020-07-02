@@ -1,68 +1,32 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Views Feedback's diagnostic data in a more human-friendly display.
 
-## Available Scripts
+## Setup
 
-In the project directory, you can run:
+1. Clone this repository.
+2. Install dependencies with `npm i`
+3. Start the development server with `npm start` to view it at [localhost:3000](http://localhost:3000).
 
-### `yarn start`
+## Development and deployment
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To develop, create a branch from master, do your changes and create a pull request. **DO NOT MAKE CHANGES ON MASTER**.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+As of now, this repo is linked to Netlify's pipeline. So it will **auto-deploy any changes to master**. It will also create a review app for any pull request that passes the CI tests.
 
-### `yarn test`
+## Usage
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+As of now, it relies on an id param, which is sent to the parser server. This server can be sleeping, so, at times, it can take a while to load.
 
-### `yarn build`
+`id` param needs to be specified in the query string (ie: `?id=the_id`).
+`debug=true` is an optional param to get the raw JSON instead of the view.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Order and timing
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Items are displayed in the reverse order they are recorded (last items are most recent). Due to some technical effects, timestamps can get jumbled up and are **not** the source of truth for sequence.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Times and timezones
 
-### `yarn eject`
+We are still deciding on how to save and present time. By trying to save it _in user's timezone_, one can get mixed results, as both the timezone can change (say, by hard resetting the devide) or because of other factors, such as daylight savings time or travel. This can cause problems with understanding time.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+On the other hand, by saving it as absolute times (ie: UTC), we can convert it to any timezone. But, in this case, there is no guarantee that the time will match what happened for the user (ie: user was in EST before performing a hard reset. Then, all info from before is EST and after is UTC).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This is an open-ended question with no perfect solution. Hence, we need input from users about what would be more useful so that we can try to optimize it to that fashion.
