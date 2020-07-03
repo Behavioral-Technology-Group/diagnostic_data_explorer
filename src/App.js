@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Dump from "./components/Dump";
 import Explorer from "./components/Explorer";
 import Loading from "./components/Loading";
 
