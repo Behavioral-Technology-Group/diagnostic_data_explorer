@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Dump from "./components/Dump";
 import Explorer from "./components/Explorer";
 import Loading from "./components/Loading";
 
@@ -19,40 +18,36 @@ const getDataTypes = (data) =>
     return { ...base, [d.name]: true };
   }, {});
 
-const calculateUseRaw = () =>
-  new URLSearchParams(document.location.search.substring(1)).get("debug");
-
 function App() {
   const [filters, setFilters] = useState({});
   const [data, setData] = useState([]);
   const [version, setVersion] = useState("unknown");
   const [raw, setRaw] = useState({});
   const [curState, setCurState] = useState("default");
-  // const [useRaw, setUseRaw] = useState("false");
 
-  useEffect((useRaw) => {
-    async function fetchInitialData(useRaw) {
+  useEffect(() => {
+    async function fetchInitialData() {
       setCurState("loading");
       const response = await fetchData();
       const { log, version } = response;
-      setCurState(useRaw === "true" ? "dump" : "explore");
+      setCurState("explore");
       setData(log);
       setVersion(version);
       setFilters(getDataTypes(log));
       setRaw(response);
     }
-    fetchInitialData(calculateUseRaw());
+    fetchInitialData();
   }, []);
 
   const states = {
     loading: <Loading />,
-    dump: <Dump raw={raw} version={version} />,
     explore: (
       <Explorer
         filters={filters}
         setFilters={setFilters}
         data={data}
         version={version}
+        raw={raw}
       />
     ),
   };

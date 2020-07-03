@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./DataList.css";
 
 import Zap from "./events/zap";
@@ -42,25 +42,14 @@ const dataItem = (dataset, prettyPrint) => {
 const prepData = (data, prettyPrint) => {
   const reversedData = [...data].reverse();
   return reversedData.map((d) => {
-    console.log(d);
     return dataItem(d, prettyPrint);
   });
 };
 
-const DataList = ({ data, version, hasData }) => {
-  const [prettyPrint, setPrettyPrint] = useState(true);
+const DataList = ({ data, version, hasData, prettyPrint }) => {
   const noDataComp = <h3>No data for this feedback</h3>;
   const dataComp = (
     <div>
-      <h2>Parser version: {version}</h2>
-      <p>
-        <input
-          type="checkbox"
-          checked={prettyPrint}
-          onChange={(e) => setPrettyPrint(e.target.checked)}
-        />{" "}
-        Pretty Print
-      </p>
       <table>
         <thead>
           <tr>

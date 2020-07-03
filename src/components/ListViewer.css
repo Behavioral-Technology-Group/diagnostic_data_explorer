@@ -1,0 +1,14 @@
+.list-viewer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 1rem;
+}
+
+.list-viewer__sidebar {
+  flex-grow: 1;
+}
+
+.list-viewer__main {
+  flex-grow: 5;
+}

@@ -1,16 +1,16 @@
 import React from "react";
 import { battToPercent } from "../../lib/helpers";
 
-const sample = {
-  target: 30,
-  charged: true,
-  skipped: false,
-  battv: 3.516,
-  release: 136,
-  exit: 90,
-  tchg: 12,
-  trel: 0,
-};
+// const sample = {
+//   target: 30,
+//   charged: true,
+//   skipped: false,
+//   battv: 3.516,
+//   release: 136,
+//   exit: 90,
+//   tchg: 12,
+//   trel: 0,
+// };
 
 const releaseToPercent = (rawRelease) => {
   return parseInt((parseFloat(rawRelease) / 450) * 100);
