@@ -52,7 +52,6 @@ const DataList = ({ data, version, hasData }) => {
   const noDataComp = <h3>No data for this feedback</h3>;
   const dataComp = (
     <div>
-      <h2>Parser version: {version}</h2>
       <p>
         <input
           type="checkbox"
