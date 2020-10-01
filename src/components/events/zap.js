@@ -12,15 +12,45 @@ import { battToPercent } from "../../lib/helpers";
 //   trel: 0,
 // };
 
+// const anotherSample = {
+//   type: 4,
+//   data: "02",
+//   raw: "0481000002",
+//   len: 1,
+//   timestamped: true,
+//   name: "Zap",
+//   v: { skip: true, reason: "CHARGING" },
+//   ts: "2020-09-30 19:03:37.390",
+// };
+
 const releaseToPercent = (rawRelease) => {
   return parseInt((parseFloat(rawRelease) / 450) * 100);
 };
 
+const adapter = (item) => {
+  return {
+    battv: item.battv,
+    target: item.target ? parseInt(item.target) : undefined,
+    release: item.release ? releaseToPercent(item.release) : undefined,
+    skipped: item.skipped || item.skip || (item.v && item.v.skip),
+    reason: item.reason || (item.v && item.v.reason),
+  };
+};
+
+const SkippedZap = (props) => {
+  return <span>{`⏭️ (${props.reason})`}</span>;
+};
+
 const Zap = (props) => {
-  const battery = battToPercent(props.battv);
-  const target = parseInt(props.target);
-  const release = releaseToPercent(props.release);
-  const skipped = props.skipped ? "⏭️" : "";
+  const zap = adapter(props);
+  if (zap.skipped) {
+    return SkippedZap(zap);
+  }
+
+  const battery = battToPercent(zap.battv);
+  const target = parseInt(zap.target);
+  const release = releaseToPercent(zap.release);
+  const skipped = zap.skipped ? "⏭️" : "";
   return <span>{`🔋${battery}% ⚡${release}% of ${target}% ${skipped}`}</span>;
 };
 
