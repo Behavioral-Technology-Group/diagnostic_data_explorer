@@ -17,3 +17,33 @@
 .datalist__item:nth-child(odd) {
   background: #fff;
 }
+
+.datalist__raw {
+  display: flex;
+  justify-content: space-around;
+}
+
+.datalist__raw-button {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.datalist__raw-button:hover {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.grow {
+  transition: all 0.2s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.2);
+}
+
+@media (max-width: 600px) {
+  .datalist__column-raw {
+    display: none;
+  }
+}

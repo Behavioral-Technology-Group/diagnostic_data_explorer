@@ -25,6 +25,28 @@ const stringifyInfo = (info) => {
     .join(" || ");
 };
 
+const rawToggler = (props) => {
+  return (
+    <div className="datalist__raw">
+      <button
+        className="datalist__raw-button grow"
+        style={{ marginLeft: "auto", marginRight: "auto" }}
+        onClick={() => alert(JSON.stringify(props, null, 2))}
+      >
+        {"👁"}
+      </button>
+      <button
+        className="datalist__raw-button grow"
+        onClick={() =>
+          navigator.clipboard.writeText(JSON.stringify(props, null, 2))
+        }
+      >
+        {"📋"}
+      </button>
+    </div>
+  );
+};
+
 const dataItem = (dataset, prettyPrint) => {
   const infoComp = prettyPrint
     ? infoDictionary[dataset.name] || defaultInfo
@@ -32,6 +54,7 @@ const dataItem = (dataset, prettyPrint) => {
 
   return (
     <tr className="datalist__item">
+      <td className="datalist__column-raw">{rawToggler(dataset)}</td>
       <td>{dataset.name}</td>
       <td>{dataset.ts}</td>
       <td>{infoComp(dataset.v)}</td>
@@ -53,6 +76,7 @@ const DataList = ({ data, version, hasData, prettyPrint }) => {
       <table>
         <thead>
           <tr>
+            <th className="datalist__column-raw">Raw</th>
             <th>Type</th>
             <th>Timestamp</th>
             <th>Info</th>
