@@ -35,6 +35,8 @@ function App() {
       setVersion(version);
       setFilters(getDataTypes(log));
       setRaw(response);
+      window.rawResponse = response;
+      window.myData = log;
     }
     fetchInitialData();
   }, []);

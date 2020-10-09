@@ -31,7 +31,7 @@ const adapter = (item) => {
   return {
     battv: item.battv,
     target: item.target ? parseInt(item.target) : undefined,
-    release: item.release ? releaseToPercent(item.release) : undefined,
+    release: item.release ? item.release : undefined,
     skipped: item.skipped || item.skip || (item.v && item.v.skip),
     reason: item.reason || (item.v && item.v.reason),
   };
