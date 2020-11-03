@@ -65,10 +65,18 @@ const dataItem = (dataset, prettyPrint) => {
   );
 };
 
+const itemAdapter = (item) => {
+  // ensure v is an object
+  item.v = item.v || {};
+  item.name = item.name || "";
+  
+  return item
+};
+
 const prepData = (data, prettyPrint) => {
   const reversedData = [...data].reverse();
   return reversedData.map((d) => {
-    return dataItem(d, prettyPrint);
+    return dataItem(itemAdapter(d), prettyPrint);
   });
 };
 
