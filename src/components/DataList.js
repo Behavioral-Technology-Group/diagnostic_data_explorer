@@ -11,6 +11,9 @@ const defaultInfo = (info) => {
   return stringifyInfo(info);
 };
 
+const show = (content) => () => alert(content())
+const copy = (content) => () => navigator.clipboard.writeText(content())
+
 const infoDictionary = {
   Zap,
   Config,
@@ -26,20 +29,20 @@ const stringifyInfo = (info) => {
 };
 
 const rawToggler = (props) => {
+  const stringified = () => JSON.stringify(props, null, 2)
+
   return (
     <div className="datalist__raw">
       <button
         className="datalist__raw-button grow"
         style={{ marginLeft: "auto", marginRight: "auto" }}
-        onClick={() => alert(JSON.stringify(props, null, 2))}
+        onClick={show(stringified)}
       >
         {"👁"}
       </button>
       <button
         className="datalist__raw-button grow"
-        onClick={() =>
-          navigator.clipboard.writeText(JSON.stringify(props, null, 2))
-        }
+        onClick={copy(stringified)}
       >
         {"📋"}
       </button>
