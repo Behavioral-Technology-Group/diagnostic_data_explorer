@@ -34,6 +34,7 @@ const adapter = (item) => {
     release: item.release ? item.release : undefined,
     skipped: item.skipped || item.skip || (item.v && item.v.skip),
     reason: item.reason || (item.v && item.v.reason),
+    actualRelease: item.trel
   };
 };
 
@@ -50,8 +51,8 @@ const Zap = (props) => {
   const battery = battToPercent(zap.battv);
   const target = parseInt(zap.target);
   const release = releaseToPercent(zap.release);
-  const skipped = zap.skipped ? "⏭️" : "";
-  return <span>{`🔋${battery}% ⚡${release}% of ${target}% ${skipped}`}</span>;
+  const delivery = zap.actualRelease > 0 ? "🟢" : "🔴";
+  return <span>{`🔋${battery}% ⚡${release}% of ${target}% ${delivery}`}</span>;
 };
 
 export default Zap;
