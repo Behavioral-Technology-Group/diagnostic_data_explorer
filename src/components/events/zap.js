@@ -44,9 +44,9 @@ const SkippedZap = (props) => {
 
 const Zap = (props) => {
   const zap = adapter(props);
-  if (zap.skipped) {
-    return SkippedZap(zap);
-  }
+//  if (zap.skipped) {
+//    return SkippedZap(zap);
+//  }
 
   const battery = battToPercent(zap.battv);
   const target = parseInt(zap.target);
