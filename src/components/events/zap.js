@@ -38,9 +38,9 @@ const adapter = (item) => {
   };
 };
 
-const SkippedZap = (props) => {
-  return <span>{`⏭️ (${props.reason})`}</span>;
-};
+//const SkippedZap = (props) => {
+//  return <span>{`⏭️ (${props.reason})`}</span>;
+//};
 
 const Zap = (props) => {
   const zap = adapter(props);
